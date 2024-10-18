@@ -18,11 +18,9 @@ const PROTO_DEFS = "tf_proto_def_messages.proto"
 
 func main() {
 	var inputFile string
-	var inputProto string
 	var outputFile string
 
 	flag.StringVar(&inputFile, "i", "", "Input file")
-	flag.StringVar(&inputProto, "p", "", "Input .proto")
 	flag.StringVar(&outputFile, "o", "", "Output file")
 	flag.Parse()
 
@@ -31,17 +29,12 @@ func main() {
 		os.Exit(1)
 	}
 
-	if inputProto == "" {
-		fmt.Println("No input proto provided. Use the flag -p")
-		os.Exit(1)
-	}
-
 	if outputFile == "" {
 		fmt.Println("No output file provided. Use the flag -o")
 		os.Exit(1)
 	}
 
-	warpaints, err := extractWarpaints(inputFile, inputProto)
+	warpaints, err := extractWarpaints(inputFile)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
@@ -55,9 +48,7 @@ func main() {
 	os.WriteFile(outputFile, j, 0666)
 }
 
-func extractWarpaints(inputFile string, inputProto string) (*map[string]map[string]any, error) {
-	fmt.Println(inputFile, inputProto)
-
+func extractWarpaints(inputFile string) (*map[string]map[string]any, error) {
 	fileContent, err := os.ReadFile(inputFile)
 	if err != nil {
 		panic(err)
